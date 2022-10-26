@@ -38,8 +38,7 @@ export class ImageFinder extends Component {
 
     async fetchImages() {
         const { page, search } = this.state;
-
-
+        
         this.setState({
             loading: true,
         });
