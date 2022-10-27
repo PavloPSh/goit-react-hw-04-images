@@ -65,8 +65,8 @@ export class ImageFinder extends Component {
             this.setState({
                 search,
                 images: [],
-                
-             })
+                page: 1,    
+            })
         }
     }
 
