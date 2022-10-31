@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { toast } from 'react-toastify';
@@ -8,41 +8,32 @@ import { FcSearch } from "react-icons/fc";
 import { SearchBarHeader, SearchButton, SearchInput } from './SearchBar.styled';
 
 
+export const Searchbar = ({onSubmit}) => {
 
+    const [search, setSearch] = useState('');
 
-export class Searchbar extends Component {
-    state = {
-        search:'',
-    }
+    const handleChange = (evt) => {
+        const { value } = evt.target;
+        setSearch(value);
+    };
 
-    handleChange = (evt) => {
-        const { value, name } = evt.target;
-        this.setState({
-            [name]: value, 
-        })
-    }
-
-    handleSubmit = (evt) => {
+    const handleSubmit = (evt) => {
         evt.preventDefault();
-        const { search } = this.state;
+        
         if (search.trim() === '') {
             return toast.error('Try to find something...')
         }
-        this.props.onSubmit(search.trim());
-
-    }
-
-    render() {
-        const {  search } = this.state;
+        onSubmit(search.trim());
+    };
 
     return (
         <SearchBarHeader>
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={handleSubmit}>
 
                 <SearchButton type="submit"><FcSearch></FcSearch></SearchButton>
 
                 <SearchInput
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                     name='search'
                     value={search}
                     className="input"
@@ -53,10 +44,10 @@ export class Searchbar extends Component {
                 />
             </form>
         </SearchBarHeader>
-    )
-  }
-}
+    );
+};
+
 
 Searchbar.propTypes = {
     onSubmit: PropTypes.func.isRequired,
-}
+};

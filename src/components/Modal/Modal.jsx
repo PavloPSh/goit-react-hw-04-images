@@ -1,33 +1,31 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
 import { ModalBox, ModalOverlay } from './Modal.styled';
 
-
-
 const modalRoot = document.getElementById('modal-root')
 
-export class Modal extends Component {
+export const Modal = ({ src, id, onClose }) => {
+    
+    useEffect(() => {
 
-    componentDidMount() {
-        document.addEventListener('keydown',this.closeModal)
-    }
+        document.addEventListener('keydown', closeModal);
 
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.closeModal)
-    }
+        return (() => {
+            document.removeEventListener('keydown', closeModal);
+        })
+    });
 
-    closeModal = ({ target, currentTarget,code }) => {
+    const closeModal = ({ target, currentTarget,code }) => {
         if (target === currentTarget || code === 'Escape') {
-            this.props.onClose();
+            onClose();
         } 
     }
 
-    render() {
-        const { src, id } = this.props;
-        const { closeModal } = this;
-        return createPortal(
+
+
+    return createPortal(
             <ModalOverlay onClick={closeModal}>
                 <ModalBox >
                     <img src={src} alt={id} />
@@ -35,12 +33,12 @@ export class Modal extends Component {
             </ModalOverlay>,
             modalRoot
         )
-    }
+    
 }
 
 
 Modal.propTypes = {
     onClose: PropTypes.func.isRequired,
     src: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
 }
